@@ -1,0 +1,72 @@
+---
+title: "Demo rownames_to_var"
+author: "TheKid"
+date: "2023-10-26"
+output: html_document
+---
+
+
+```{r setup, include=FALSE} 
+# this chunk contains code that sets global options for the entire .Rmd. 
+# we use include=FALSE to suppress it from the top of the document, but it will still appear in the appendix. 
+
+knitr::opts_chunk$set(echo = FALSE) # actually set the global chunk options. 
+# we set echo=FALSE to suppress code such that it by default does not appear throughout the document. 
+# note: this is different from .Rmd default
+```
+
+# Introduction  
+Below is the function "rownames_to_var". It takes a data frame and converts the data's rownames into a variable.
+```{r echo_example, echo=TRUE}
+rownames_to_var <- function(data, remove.rownames = TRUE){
+  
+  names <- rownames(data) #creating vector for all rownames
+  
+  data_final <- data.frame(names, data) #reposition to ensure names variable is the first column
+  
+  #if argument remove.rownames is TRUE, rownames will be changed to NULL
+  if(remove.rownames == TRUE){
+    rownames(data_final) <- NULL
+  } else{NULL}
+  
+  
+  return(data_final)
+}
+```
+This function takes in two arguments, data and remove.rownames.   
+data: A data frame  
+remove.rownames: A logical evaluating to TRUE or FALSE indicating whether rownames in the original data frame should be removed or not. 
+
+
+# Demonstration
+To demonstrate the use of the function I will be using "mtcars": 
+```{r}
+data("mtcars")
+
+head(mtcars)
+```
+      
+     
+The default for the argument remove.rownames has been set to TRUE which tells the function to remove the original rownames in the data frame.
+```{r, echo=TRUE}
+test_true <- rownames_to_var(mtcars, remove.rownames = TRUE)
+
+head(test_true)
+```
+Note that a new variable "names" has been added to the data with the original rownames removed and by default R replaces it with a list of integers that corresponds to the row's position.  
+
+On the other hand, if we set remove.rownames to False: 
+```{r, echo=TRUE}
+test_false <- rownames_to_var(mtcars, remove.rownames = FALSE)
+
+head(test_false)
+```
+The new variable will still be created with the exception that the original rownames are retained. 
+
+
+## Appendix: All code in this assignment
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE} 
+# this chunk generates the complete code appendix. 
+# eval=FALSE tells R not to run (``evaluate'') the code here (it was already run before).
+```
